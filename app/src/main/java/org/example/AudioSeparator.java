@@ -53,39 +53,22 @@ public class AudioSeparator extends Application {
                 System.err.println("Input file or output directory not selected");
                 return;
             }
-
-            URL scriptUrl = AudioSeparator.class.getResource("/separate_audio.py");
-            if (scriptUrl == null) {
-                System.err.println("Could not find Python script.");
-                return;
-            }
-
-            String pythonScriptPath = new File(scriptUrl.getFile()).getAbsolutePath();
-
-            try {
-                ProcessBuilder processBuilder = new ProcessBuilder("python", pythonScriptPath, inputFile, outputDir);
-                processBuilder.redirectErrorStream(true);
-                Process process = processBuilder.start();
-
-                InputStream inputStream = process.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    System.out.println(line);
-                }
-
-                int exitCode = process.waitFor();
-                System.out.println("Exited with code: " + exitCode);
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            SepratorThread sT = new SepratorThread(inputFile, outputDir);
+            sT.start();
         });
 
         VBox vbox = new VBox(10, inputButton, inputLabel, outputButton, outputLabel, runButton);
         Scene scene = new Scene(vbox, 400, 200);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    public String getInputFile() {
+        return inputFile;
+    }
+
+    public String getOutputDir() {
+        return outputDir;
     }
 
     public static void main(String[] args) {
