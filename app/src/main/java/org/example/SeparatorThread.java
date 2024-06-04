@@ -6,15 +6,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-public class SepratorThread extends Thread {
+import javafx.scene.control.Button;
+
+public class SeparatorThread extends Thread {
     private String inputFile;
     private String outputDir;
-    public SepratorThread(String inputFile, String outputDir){
+    private Button button;
+    public SeparatorThread(String inputFile, String outputDir,Button button){
         this.inputFile = inputFile;
         this.outputDir = outputDir;
+        this.button= button;
     }
     @Override
     public void run(){
+        button.setDisable(true);
          URL scriptUrl = AudioSeparator.class.getResource("/separate_audio.py");
             if (scriptUrl == null) {
                 System.err.println("Could not find Python script.");
@@ -41,5 +46,6 @@ public class SepratorThread extends Thread {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+            button.setDisable(false);
     }
 }
