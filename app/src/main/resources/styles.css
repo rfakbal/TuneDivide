@@ -1,0 +1,50 @@
+.root {
+    -fx-background-color: #2f2f2f;
+  }
+  
+  .label {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: 'Nunito', 'Roboto', 'Proxima Nova', sans-serif;
+    -fx-font-size: 14px;
+  }
+  
+  .button{
+    -fx-background-color: #FF4742;
+    -fx-border-color: #FF4742;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-text-fill: #FFFFFF;
+    -fx-cursor: pointer;
+    -fx-font-family: 'Nunito', 'Roboto', 'Proxima Nova', sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: 800;
+    -fx-min-height: 30px;
+    -fx-min-width: 100px;
+    -fx-padding: 6px 10px; 
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0, 0, 2);
+    -fx-transition: all 0.3s ease;
+  }
+  
+  .button:hover {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #FF4742;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+  }
+  
+  .button:pressed {
+    -fx-opacity: 0.5;
+  }
+  
+  .text-field {
+    -fx-min-width: 250px;
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #000000;
+    -fx-border-color: #FFFFFF;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-font-size: 14px;
+    -fx-padding: 6px 10px;
+  }
+  

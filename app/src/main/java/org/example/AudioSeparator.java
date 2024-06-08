@@ -32,32 +32,39 @@ public class AudioSeparator extends Application {
         grid.setPadding(new Insets(25, 25, 25, 25));
 
         Label inputLabel = new Label("Select Audio File:");
+        inputLabel.getStyleClass().add("label");
         grid.add(inputLabel, 0, 1);
 
         TextField fileNameTextField = new TextField();
         fileNameTextField.setEditable(false);
         fileNameTextField.setText("No file selected");
         fileNameTextField.setPrefWidth(200);
+        fileNameTextField.getStyleClass().add("text-field");
         grid.add(fileNameTextField, 1, 1);
 
         Button inputButton = new Button("Search");
+        inputButton.getStyleClass().add("button");
         grid.add(inputButton, 2, 1);
 
         Label outputLabel = new Label("Select Output Directory:");
+        outputLabel.getStyleClass().add("label");
         grid.add(outputLabel, 0, 2);
 
         TextField outputDirTextField = new TextField();
         outputDirTextField.setEditable(false);
         outputDirTextField.setText("No output directory selected");
         outputDirTextField.setPrefWidth(200);
+        outputDirTextField.getStyleClass().add("text-field");
         grid.add(outputDirTextField, 1, 2);
 
         Button outputButton = new Button("Browse");
+        outputButton.getStyleClass().add("button");
         grid.add(outputButton, 2, 2);
 
         HBox thirdLine = new HBox(15);
         thirdLine.setAlignment(Pos.CENTER);
         Button runButton = new Button("Run");
+        runButton.getStyleClass().add("button");
         thirdLine.getChildren().add(runButton);
         
         VBox mainLayout = new VBox(20);
@@ -88,12 +95,13 @@ public class AudioSeparator extends Application {
                 System.err.println("Input file or output directory not selected");
                 return;
             }
-             SeparatorThread sT = new SeparatorThread(inputFile, outputDir, runButton);
-             runButton.setDisable(true);
-             sT.start();
+            SeparatorThread sT = new SeparatorThread(inputFile, outputDir, runButton);
+            runButton.setDisable(true);
+            sT.start();
         });
 
-        Scene scene = new Scene(mainLayout, 500, 300);
+        Scene scene = new Scene(mainLayout, 750, 400);
+        scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
