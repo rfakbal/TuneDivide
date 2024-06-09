@@ -3,16 +3,18 @@ package org.example;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
 
@@ -65,8 +67,16 @@ public class AudioSeparator extends Application {
         thirdLine.setAlignment(Pos.CENTER);
         Button runButton = new Button("Run");
         runButton.getStyleClass().add("button");
-        thirdLine.getChildren().add(runButton);
-        
+
+        ImageView loadingImageView = new ImageView(new Image(getClass().getResourceAsStream("/loading.gif")));
+        loadingImageView.getStyleClass().add("loading-gif");
+        loadingImageView.setVisible(false);
+
+        VBox runBox = new VBox(10);
+        runBox.setAlignment(Pos.CENTER);
+        runBox.getChildren().addAll(runButton, loadingImageView);
+        thirdLine.getChildren().add(runBox);
+
         VBox mainLayout = new VBox(20);
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.getChildren().addAll(grid, thirdLine);
@@ -95,7 +105,10 @@ public class AudioSeparator extends Application {
                 System.err.println("Input file or output directory not selected");
                 return;
             }
-            SeparatorThread sT = new SeparatorThread(inputFile, outputDir, runButton);
+
+            loadingImageView.setVisible(true);
+
+            SeparatorThread sT = new SeparatorThread(inputFile, outputDir, runButton, loadingImageView);
             runButton.setDisable(true);
             sT.start();
         });

@@ -6,17 +6,24 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import javafx.scene.control.Button;
 
 public class SeparatorThread extends Thread {
     private String inputFile;
     private String outputDir;
     private Button button;
-    public SeparatorThread(String inputFile, String outputDir,Button button){
+    private ImageView loadingImageView;
+
+    public SeparatorThread(String inputFile, String outputDir,Button button, ImageView loadingImageView){
         this.inputFile = inputFile;
         this.outputDir = outputDir;
         this.button= button;
+        this.loadingImageView = loadingImageView;
     }
+
     @Override
     public void run(){
         button.setDisable(true);
@@ -47,5 +54,6 @@ public class SeparatorThread extends Thread {
                 ex.printStackTrace();
             }
             button.setDisable(false);
+            loadingImageView.setVisible(false);
     }
 }
