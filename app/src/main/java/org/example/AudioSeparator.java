@@ -81,9 +81,20 @@ public class AudioSeparator extends Application {
         loadingImageView.getStyleClass().add("loading-gif");
         loadingImageView.setVisible(false);
 
+        Button viewFolderButton = new Button("View Folder");
+        viewFolderButton.getStyleClass().add("button");
+        viewFolderButton.setVisible(false);
+        viewFolderButton.setOnAction(e -> {
+            try {
+                java.awt.Desktop.getDesktop().open(new File(outputDir));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
         VBox runBox = new VBox(10);
         runBox.setAlignment(Pos.CENTER);
-        runBox.getChildren().addAll(runButton, loadingImageView);
+        runBox.getChildren().addAll(runButton, loadingImageView, viewFolderButton);
         thirdLine.getChildren().add(runBox);
 
         VBox mainLayout = new VBox(20);
@@ -117,7 +128,7 @@ public class AudioSeparator extends Application {
             String model = modelComboBox.getValue();
             loadingImageView.setVisible(true);
 
-            SeparatorThread sT = new SeparatorThread(inputFile, outputDir, runButton, loadingImageView,model);
+            SeparatorThread sT = new SeparatorThread(inputFile, outputDir, runButton, loadingImageView, viewFolderButton, model);
             runButton.setDisable(true);
             sT.start();
         });

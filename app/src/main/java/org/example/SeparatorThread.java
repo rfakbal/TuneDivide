@@ -16,47 +16,57 @@ public class SeparatorThread extends Thread {
     private String outputDir;
     private Button button;
     private ImageView loadingImageView;
+    private Button viewFolderButton;
     private String model;
-    public SeparatorThread(String inputFile, String outputDir,Button button, ImageView loadingImageView,String model){
+
+    public SeparatorThread(String inputFile, String outputDir, Button button, ImageView loadingImageView, Button viewFolderButton, String model) {
         this.inputFile = inputFile;
         this.outputDir = outputDir;
-        this.button= button;
+        this.button = button;
         this.loadingImageView = loadingImageView;
+        this.viewFolderButton = viewFolderButton;
         this.model = model;
     }
 
     @Override
-    public void run(){
+    public void run() {
         button.setDisable(true);
-         URL scriptUrl = AudioSeparator.class.getResource("/"+model+".py");
-            if (scriptUrl == null) {
-                System.err.println("Could not find Python script.");
-                button.setDisable(false);
-                loadingImageView.setVisible(false);
-                return;
-            }
-
-            String pythonScriptPath = new File(scriptUrl.getFile()).getAbsolutePath();
-
-            try {
-                ProcessBuilder processBuilder = new ProcessBuilder("python", pythonScriptPath, inputFile, outputDir);
-                processBuilder.redirectErrorStream(true);
-                Process process = processBuilder.start();
-
-                InputStream inputStream = process.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    System.out.println(line);
-                }
-
-                int exitCode = process.waitFor();
-                System.out.println("Exited with code: " + exitCode);
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+        URL scriptUrl = AudioSeparator.class.getResource("/" + model + ".py");
+        if (scriptUrl == null) {
+            System.err.println("Could not find Python script.");
             button.setDisable(false);
             loadingImageView.setVisible(false);
+            return;
+        }
+
+        String pythonScriptPath = new File(scriptUrl.getFile()).getAbsolutePath();
+
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("python", pythonScriptPath, inputFile, outputDir);
+            processBuilder.redirectErrorStream(true);
+            Process process = processBuilder.start();
+
+            InputStream inputStream = process.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+
+            int exitCode = process.waitFor();
+            System.out.println("Exited with code: " + exitCode);
+
+            if (exitCode == 0) {
+                // Process completed successfully
+                javafx.application.Platform.runLater(() -> viewFolderButton.setVisible(true));
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        javafx.application.Platform.runLater(() -> {
+            button.setDisable(false);
+            loadingImageView.setVisible(false);
+        });
     }
 }
