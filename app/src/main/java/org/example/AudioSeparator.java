@@ -1,10 +1,10 @@
 package org.example;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -63,6 +63,15 @@ public class AudioSeparator extends Application {
         outputButton.getStyleClass().add("button");
         grid.add(outputButton, 2, 2);
 
+        HBox modelBox = new HBox(10);
+        modelBox.setAlignment(Pos.CENTER);
+        Label modelLabel = new Label("Select Model: (default 2stems)");
+        modelLabel.getStyleClass().add("label");
+        ComboBox<String> modelComboBox = new ComboBox<>();
+        modelComboBox.getItems().addAll("2stems", "4stems", "5stems");
+        modelComboBox.setValue("2stems");
+        modelBox.getChildren().addAll(modelLabel, modelComboBox);
+
         HBox thirdLine = new HBox(15);
         thirdLine.setAlignment(Pos.CENTER);
         Button runButton = new Button("Run");
@@ -79,7 +88,7 @@ public class AudioSeparator extends Application {
 
         VBox mainLayout = new VBox(20);
         mainLayout.setAlignment(Pos.CENTER);
-        mainLayout.getChildren().addAll(grid, thirdLine);
+        mainLayout.getChildren().addAll(grid, modelBox, thirdLine);
 
         outputButton.setOnAction(e -> {
             DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -105,10 +114,10 @@ public class AudioSeparator extends Application {
                 System.err.println("Input file or output directory not selected");
                 return;
             }
-
+            String model = modelComboBox.getValue();
             loadingImageView.setVisible(true);
 
-            SeparatorThread sT = new SeparatorThread(inputFile, outputDir, runButton, loadingImageView);
+            SeparatorThread sT = new SeparatorThread(inputFile, outputDir, runButton, loadingImageView,model);
             runButton.setDisable(true);
             sT.start();
         });

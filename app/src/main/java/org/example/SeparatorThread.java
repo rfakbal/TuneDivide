@@ -16,20 +16,23 @@ public class SeparatorThread extends Thread {
     private String outputDir;
     private Button button;
     private ImageView loadingImageView;
-
-    public SeparatorThread(String inputFile, String outputDir,Button button, ImageView loadingImageView){
+    private String model;
+    public SeparatorThread(String inputFile, String outputDir,Button button, ImageView loadingImageView,String model){
         this.inputFile = inputFile;
         this.outputDir = outputDir;
         this.button= button;
         this.loadingImageView = loadingImageView;
+        this.model = model;
     }
 
     @Override
     public void run(){
         button.setDisable(true);
-         URL scriptUrl = AudioSeparator.class.getResource("/separate_audio.py");
+         URL scriptUrl = AudioSeparator.class.getResource("/"+model+".py");
             if (scriptUrl == null) {
                 System.err.println("Could not find Python script.");
+                button.setDisable(false);
+                loadingImageView.setVisible(false);
                 return;
             }
 
